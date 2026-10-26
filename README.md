@@ -25,6 +25,15 @@ K3sProvisionerPolicy
 
 `K3sProvisionerPolicy` chỉ dùng cho máy quản trị. EC2 không chứa private key; EC2 dùng `K3sNodeRole` để đăng ký SSM.
 
+## Topology
+
+![AWS K3s topology](topology.png)
+
+Luồng chính: máy quản trị xác thực bằng X.509 certificate qua IAM Roles Anywhere,
+nhận credential tạm thời, tạo EC2 bằng `RunInstances`, rồi dùng SSM
+`SendCommand` để cài K3s. Các EC2 giao tiếp trong K3s cluster; mỗi node gắn
+`K3sNodeRole`.
+
 ## Thành phần
 
 - `k3s-controlplane.sh`: cài K3s server trên control plane.
